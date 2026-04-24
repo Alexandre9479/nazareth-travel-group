@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Nazareth Travel Group">
+  <!-- Blue circle background -->
+  <circle cx="24" cy="24" r="24" fill="#1b5fa6"/>
+  <!-- N letterform in white -->
+  <text
+    x="7"
+    y="36"
+    font-family="Georgia, serif"
+    font-size="32"
+    font-weight="700"
+    fill="white"
+  >N</text>
+  <!-- Orange swoosh -->
+  <path
+    d="M6 38 C 14 44, 32 38, 42 41"
+    stroke="#f07320"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    fill="none"
+  />
+</svg>

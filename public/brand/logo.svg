@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100" role="img" aria-label="Nazareth Travel Group">
+  <!-- Nazareth — bold blue -->
+  <text
+    x="4"
+    y="46"
+    font-family="Georgia, 'Palatino Linotype', serif"
+    font-size="44"
+    font-weight="700"
+    letter-spacing="-0.5"
+    fill="#1b5fa6"
+  >Nazareth</text>
+
+  <!-- Orange wave swoosh — main -->
+  <path
+    d="M4 56 C 40 72, 90 56, 140 60 C 180 64, 220 52, 268 62"
+    stroke="#f07320"
+    stroke-width="3.8"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <!-- Orange wave swoosh — inner thin echo -->
+  <path
+    d="M4 62 C 40 78, 90 62, 140 66 C 180 70, 220 58, 268 68"
+    stroke="#f07320"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    fill="none"
+    opacity="0.45"
+  />
+
+  <!-- travel group — orange, lighter weight -->
+  <text
+    x="6"
+    y="83"
+    font-family="'Arial', 'Helvetica Neue', Helvetica, sans-serif"
+    font-size="18.5"
+    font-weight="400"
+    letter-spacing="2.5"
+    fill="#f07320"
+  >travel group</text>
+
+  <!-- tagline italic -->
+  <text
+    x="5"
+    y="97"
+    font-family="Georgia, 'Palatino Linotype', serif"
+    font-size="10.5"
+    font-style="italic"
+    fill="#f07320"
+    opacity="0.85"
+  >'Your bridge to the Holy Land'</text>
+</svg>
