@@ -5,7 +5,9 @@ import { ArrowRight, MapPin } from "lucide-react";
 import Section from "@/components/shared/Section";
 import SectionHeader from "@/components/shared/SectionHeader";
 import CTAStrip from "@/components/home/CTAStrip";
-import { DESTINATIONS } from "@/lib/data";
+import { getDestinations } from "@/lib/sanity/fetch";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Sacred Destinations",
@@ -13,7 +15,8 @@ export const metadata: Metadata = {
     "Explore the world's most sacred Christian destinations — Jerusalem, Bethlehem, Rome, Petra, Galilee and more.",
 };
 
-export default function DestinationsPage() {
+export default async function DestinationsPage() {
+  const destinations = await getDestinations();
   return (
     <>
       <div className="relative bg-olive-900 py-24 overflow-hidden">
@@ -41,7 +44,7 @@ export default function DestinationsPage() {
 
       <Section className="bg-stone-50">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
-          {DESTINATIONS.map((dest) => (
+          {destinations.map((dest) => (
             <Link
               key={dest.id}
               href={`/destinations/${dest.slug}`}

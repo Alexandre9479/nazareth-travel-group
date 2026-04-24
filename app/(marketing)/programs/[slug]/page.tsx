@@ -3,8 +3,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Clock, Users, ArrowUpRight, CheckCircle2, XCircle, MapPin, ChevronRight } from "lucide-react";
+import { getPackageBySlug, getPackages } from "@/lib/sanity/fetch";
 import { PACKAGES } from "@/lib/data";
 import { packageInquiryLink } from "@/lib/whatsapp";
+
+export const revalidate = 60;
 import Badge from "@/components/shared/Badge";
 import CTAStrip from "@/components/home/CTAStrip";
 import Container from "@/components/shared/Container";
@@ -21,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const pkg = PACKAGES.find((p) => p.slug === slug);
+  const pkg = await getPackageBySlug(slug);
   if (!pkg) return {};
   return {
     title: pkg.title,
@@ -35,10 +38,12 @@ export default async function ProgramDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const pkg = PACKAGES.find((p) => p.slug === slug);
+  const [pkg, allPackages] = await Promise.all([
+    getPackageBySlug(slug),
+    getPackages(),
+  ]);
   if (!pkg) notFound();
-
-  const related = PACKAGES.filter((p) => p.slug !== slug).slice(0, 3);
+  const related = allPackages.filter((p) => p.slug !== slug).slice(0, 3);
   const whatsappLink = packageInquiryLink(pkg.title);
 
   return (

@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin, ChevronRight, CheckCircle2, Calendar, ArrowRight } from "lucide-react";
 import { DESTINATIONS, PACKAGES } from "@/lib/data";
+import { getDestinationBySlug, getPackages } from "@/lib/sanity/fetch";
+
+export const revalidate = 60;
 import { packageInquiryLink } from "@/lib/whatsapp";
 import Container from "@/components/shared/Container";
 import CTAStrip from "@/components/home/CTAStrip";
@@ -18,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const dest = DESTINATIONS.find((d) => d.slug === slug);
+  const dest = await getDestinationBySlug(slug);
   if (!dest) return {};
   return {
     title: `${dest.name} — Sacred Destination`,
@@ -32,10 +35,13 @@ export default async function DestinationDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const dest = DESTINATIONS.find((d) => d.slug === slug);
+  const [dest, allPackages] = await Promise.all([
+    getDestinationBySlug(slug),
+    getPackages(),
+  ]);
   if (!dest) notFound();
 
-  const relatedPackages = PACKAGES.filter((p) =>
+  const relatedPackages = allPackages.filter((p) =>
     p.destinations.some((d) => d.toLowerCase() === dest.name.toLowerCase())
   ).slice(0, 3);
 

@@ -3,7 +3,9 @@ import Section from "@/components/shared/Section";
 import CTAStrip from "@/components/home/CTAStrip";
 import FAQAccordion from "@/components/faqs/FAQAccordion";
 import JsonLd, { faqPageSchema } from "@/components/shared/JsonLd";
-import { FAQS } from "@/lib/data";
+import { getFAQs } from "@/lib/sanity/fetch";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "FAQs",
@@ -11,10 +13,11 @@ export const metadata: Metadata = {
     "Answers to the most common questions about Holy Land pilgrimage planning with Nazareth Travel Group.",
 };
 
-export default function FAQsPage() {
+export default async function FAQsPage() {
+  const faqs = await getFAQs();
   return (
     <>
-      <JsonLd data={faqPageSchema(FAQS)} />
+      <JsonLd data={faqPageSchema(faqs)} />
 
       <div className="bg-olive-900 py-24">
         <div className="mx-auto max-w-7xl px-6 md:px-12 text-center">
@@ -33,7 +36,7 @@ export default function FAQsPage() {
       </div>
 
       <Section className="bg-stone-50">
-        <FAQAccordion faqs={FAQS} />
+        <FAQAccordion faqs={faqs} />
         <div className="text-center mt-12">
           <p className="font-body text-ink-500 mb-4">
             Can&apos;t find your answer? We&apos;re happy to help directly.

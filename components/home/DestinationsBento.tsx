@@ -6,13 +6,13 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Section from "@/components/shared/Section";
 import SectionHeader from "@/components/shared/SectionHeader";
-import { DESTINATIONS } from "@/lib/data";
+import { DESTINATIONS, type Destination } from "@/lib/data";
 
-export default function DestinationsBento() {
+export default function DestinationsBento({ destinations: destProp }: { destinations?: Destination[] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
-  const destinations = DESTINATIONS.slice(0, 6);
+  const destinations = (destProp ?? DESTINATIONS).slice(0, 6);
   const [hero, ...rest] = destinations;
 
   return (

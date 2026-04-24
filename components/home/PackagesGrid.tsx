@@ -7,10 +7,10 @@ import { Clock, Users, ArrowRight, MapPin } from "lucide-react";
 import Section from "@/components/shared/Section";
 import SectionHeader from "@/components/shared/SectionHeader";
 import Badge from "@/components/shared/Badge";
-import { PACKAGES } from "@/lib/data";
+import { PACKAGES, type Package } from "@/lib/data";
 import { packageInquiryLink } from "@/lib/whatsapp";
 
-export default function PackagesGrid() {
+export default function PackagesGrid({ packages = PACKAGES }: { packages?: Package[] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -24,7 +24,7 @@ export default function PackagesGrid() {
       />
 
       <div ref={ref} className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
-        {PACKAGES.map((pkg, i) => (
+        {packages.map((pkg, i) => (
           <motion.article
             key={pkg.id}
             initial={{ opacity: 0, y: 36 }}

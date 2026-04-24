@@ -4,9 +4,9 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Section from "@/components/shared/Section";
 import SectionHeader from "@/components/shared/SectionHeader";
-import { TESTIMONIALS } from "@/lib/data";
+import { TESTIMONIALS, type Testimonial } from "@/lib/data";
 
-export default function Testimonials() {
+export default function Testimonials({ testimonials = TESTIMONIALS }: { testimonials?: Testimonial[] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -21,7 +21,7 @@ export default function Testimonials() {
       />
 
       <div ref={ref} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {TESTIMONIALS.map((t, i) => (
+        {testimonials.map((t, i) => (
           <motion.div
             key={t.id}
             initial={{ opacity: 0, y: 32 }}

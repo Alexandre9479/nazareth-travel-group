@@ -3,10 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Clock, Users, ArrowRight, MapPin } from "lucide-react";
 import Section from "@/components/shared/Section";
-import SectionHeader from "@/components/shared/SectionHeader";
+
 import Badge from "@/components/shared/Badge";
 import CTAStrip from "@/components/home/CTAStrip";
-import { PACKAGES } from "@/lib/data";
+import { getPackages } from "@/lib/sanity/fetch";
+
+export const revalidate = 60;
+
 import { packageInquiryLink } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -15,7 +18,8 @@ export const metadata: Metadata = {
     "Explore our Holy Land, Rome, Egypt and custom Christian pilgrimage packages. Crafted for Kenyan churches and pilgrims.",
 };
 
-export default function ProgramsPage() {
+export default async function ProgramsPage() {
+  const packages = await getPackages();
   return (
     <>
       {/* Page hero */}
@@ -46,7 +50,7 @@ export default function ProgramsPage() {
 
       <Section className="bg-stone-50">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
-          {PACKAGES.map((pkg) => (
+          {packages.map((pkg) => (
             <article
               key={pkg.id}
               className="card-lift group flex flex-col rounded-2xl overflow-hidden bg-white border border-stone-200 shadow-sm"
