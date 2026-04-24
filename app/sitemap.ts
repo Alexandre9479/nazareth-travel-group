@@ -17,6 +17,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/blog`, changeFrequency: "weekly" as const, priority: 0.7 },
     { url: `${BASE_URL}/contact`, changeFrequency: "yearly" as const, priority: 0.8 },
     { url: `${BASE_URL}/pastors`, changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/privacy`, changeFrequency: "yearly" as const, priority: 0.2 },
+    { url: `${BASE_URL}/terms`, changeFrequency: "yearly" as const, priority: 0.2 },
   ];
 
   const packagePages = PACKAGES.map((p) => ({
