@@ -126,6 +126,17 @@ export const ALL_POSTS_QUERY = groq`
   }
 `;
 
+export const LEGAL_PAGE_QUERY = groq`
+  *[_type == "legalPage" && pageType == $pageType][0] {
+    title,
+    pageType,
+    lastUpdated,
+    openingScripture { verse, reference },
+    body,
+    closingScripture { verse, reference }
+  }
+`;
+
 export const POST_BY_SLUG_QUERY = groq`
   *[_type == "post" && slug.current == $slug][0] {
     _id,

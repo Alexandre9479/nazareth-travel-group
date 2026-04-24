@@ -29,6 +29,7 @@ export default defineConfig({
             S.documentTypeListItem("testimonial").title("Testimonials"),
             S.documentTypeListItem("faq").title("FAQs"),
             S.documentTypeListItem("post").title("Blog Posts"),
+            S.documentTypeListItem("legalPage").title("Legal Pages (Privacy & Terms)"),
             S.divider(),
             S.documentTypeListItem("inquiry").title("Inquiries"),
           ]),

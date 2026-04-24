@@ -5,6 +5,7 @@ import faq from "./faq";
 import post from "./post";
 import settings from "./settings";
 import inquiry from "./inquiry";
+import legalPage from "./legalPage";
 
 export const schemaTypes = [
   packageSchema,
@@ -14,4 +15,5 @@ export const schemaTypes = [
   post,
   settings,
   inquiry,
+  legalPage,
 ];
