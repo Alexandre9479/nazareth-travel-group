@@ -6,6 +6,8 @@ import post from "./post";
 import settings from "./settings";
 import inquiry from "./inquiry";
 import legalPage from "./legalPage";
+import scripture from "./scripture";
+import departure from "./departure";
 
 export const schemaTypes = [
   packageSchema,
@@ -16,4 +18,6 @@ export const schemaTypes = [
   settings,
   inquiry,
   legalPage,
+  scripture,
+  departure,
 ];

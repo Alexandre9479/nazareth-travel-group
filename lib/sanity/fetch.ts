@@ -14,6 +14,8 @@ import {
   ALL_POSTS_QUERY,
   POST_BY_SLUG_QUERY,
   SETTINGS_QUERY,
+  SCRIPTURES_QUERY,
+  DEPARTURES_QUERY,
 } from "./queries";
 import {
   PACKAGES as STATIC_PACKAGES,
@@ -148,25 +150,134 @@ export async function getFAQs(): Promise<FAQ[]> {
   return raw?.length ? raw : STATIC_FAQS;
 }
 
+// ─── Scriptures ──────────────────────────────────────────────────────────────
+
+import { SCRIPTURES as STATIC_SCRIPTURES } from "@/lib/data";
+
+export async function getScriptures() {
+  const data = await sanityFetch<{ id: string; verse: string; reference: string }[]>(SCRIPTURES_QUERY);
+  return data?.length ? data : STATIC_SCRIPTURES;
+}
+
+// ─── Departures ──────────────────────────────────────────────────────────────
+
+import { DEPARTURES as STATIC_DEPARTURES } from "@/lib/data";
+
+export async function getDepartures() {
+  const data = await sanityFetch<{
+    id: string; tourTitle: string; departureMonth: string; type: string; seatsLeft: number;
+  }[]>(DEPARTURES_QUERY);
+  if (data?.length) return data.map((d) => ({
+    month: d.departureMonth,
+    tour: d.tourTitle,
+    seatsLeft: d.seatsLeft,
+    type: d.type,
+  }));
+  return STATIC_DEPARTURES;
+}
+
 // ─── Settings ────────────────────────────────────────────────────────────────
 
-type SiteSettings = {
+export type SiteSettings = {
   siteName?: string;
   whatsappNumber?: string;
   phone?: string;
   email?: string;
   address?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  youtubeUrl?: string;
   announcement?: { enabled: boolean; text: string; linkText: string; linkUrl: string };
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroHeadlineAccent?: string;
+  heroSubheadline?: string;
+  heroCTAPrimary?: string;
+  heroCTASecondary?: string;
+  heroStats?: { value: string; label: string }[];
+  featuresEyebrow?: string;
+  featuresHeadline?: string;
+  featuresSubheadline?: string;
+  featureItems?: { number: string; title: string; description: string }[];
+  storyEyebrow?: string;
+  storyHeadline?: string;
+  storyParagraph1?: string;
+  storyParagraph2?: string;
+  storyQuote?: string;
+  storyQuoteAuthor?: string;
+  storyStatValue?: string;
+  storyStatLabel?: string;
+  ctaEyebrow?: string;
+  ctaHeadline?: string;
+  ctaHeadlineAccent?: string;
+  ctaSubheadline?: string;
+  ctaWhatsAppLabel?: string;
+  ctaEmailLabel?: string;
+  tickerItems?: string[];
+  trustBadges?: { abbr: string; name: string; logoUrl?: string }[];
+};
+
+const SETTINGS_FALLBACK: SiteSettings = {
+  siteName: "Nazareth Travel Group",
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "254700000000",
+  phone: "+254 700 000 000",
+  email: "info@nazarethtravelgroup.com",
+  heroEyebrow: "Holy Land Pilgrimages from Africa",
+  heroHeadline: "Walk where Jesus walked.",
+  heroHeadlineAccent: "Your faith awaits.",
+  heroSubheadline: "Africa's most trusted Christian pilgrimage company. We take Kenyan churches, pastors, and individuals to the Holy Land, Rome, Egypt, and beyond — with care, integrity, and deep reverence.",
+  heroCTAPrimary: "Plan My Pilgrimage",
+  heroCTASecondary: "Chat on WhatsApp",
+  heroStats: [
+    { value: "12+", label: "Years of service" },
+    { value: "5,000+", label: "Pilgrims served" },
+    { value: "4.9", label: "Average rating" },
+  ],
+  featuresEyebrow: "Why Choose Us",
+  featuresHeadline: "Why pilgrims choose Nazareth Travel Group",
+  featuresSubheadline: "Sacred travel deserves more than a booking portal. It deserves a company that prays with you before the flight and celebrates with you when you return.",
+  featureItems: [
+    { number: "01", title: "Trusted & Licensed", description: "Fully licensed and insured with IATA, Kenya Tourism Board, and ATTA membership. Over a decade of safe, dependable pilgrimage service. Your peace of mind is our foundation." },
+    { number: "02", title: "Scripture-Led Journeys", description: "Every site visit is rooted in the Word. Our expert Christian guides bring the Bible to life in context — not as tourists, but as pilgrims with purpose and prayerfulness." },
+    { number: "03", title: "Personal, Caring Service", description: "We are a small, personal company — not a factory. You'll have a dedicated coordinator from first inquiry to your return home. Your pastor can lead as you travel." },
+    { number: "04", title: "Africa-First Expertise", description: "We understand the African Christian pilgrim — the budget, the prayer style, the community travel. Our packages are crafted specifically for Kenyan and African churches." },
+  ],
+  storyEyebrow: "Our Story",
+  storyHeadline: "Born from a calling, built on trust",
+  storyParagraph1: "Nazareth Travel Group was founded with a single conviction: every African Christian deserves the chance to walk where their Lord walked. We started humbly — one tour, one group of faith-filled pilgrims from a Nairobi church — and grew through the most powerful marketing in the world: transformed lives.",
+  storyParagraph2: "Today we are Africa's most trusted Holy Land pilgrimage company, having taken thousands of pilgrims from Kenya and the wider African continent to Israel, Rome, Egypt, Greece, Turkey and Jordan. Every group returns changed. Every church that travels with us comes back on fire.",
+  storyQuote: "To stand at the empty tomb and know — truly know — that He is risen. That is what we offer. Not a holiday. A transformation.",
+  storyQuoteAuthor: "Founder, Nazareth Travel Group",
+  storyStatValue: "12+",
+  storyStatLabel: "years serving African pilgrims",
+  ctaEyebrow: "Your sacred journey begins here",
+  ctaHeadline: "Ready to walk the",
+  ctaHeadlineAccent: "Holy Land?",
+  ctaSubheadline: "Reach out today and we'll help you plan a pilgrimage that will change your life — and your church — forever.",
+  ctaWhatsAppLabel: "Chat on WhatsApp",
+  ctaEmailLabel: "Send an Email Inquiry",
+  tickerItems: [
+    "Rev. Peter just inquired about the Classic Holy Land tour",
+    "Sister Margaret requested info on the Rome Pilgrimage",
+    "Bishop Ochieng booked for a group of 45",
+    "Mrs. Wanjiku is planning her second pilgrimage",
+    "Pastor David requested the Easter 2026 package",
+    "Sr. Agnes from Mombasa joined the October group",
+  ],
+  trustBadges: [
+    { abbr: "IATA", name: "IATA Member" },
+    { abbr: "KTB", name: "Kenya Tourism Board" },
+    { abbr: "ATTA", name: "ATTA Member" },
+    { abbr: "KATA", name: "KATA Member" },
+    { abbr: "KTRA", name: "Kenya Tourism Regulatory Authority" },
+  ],
 };
 
 export async function getSettings(): Promise<SiteSettings> {
   const data = await sanityFetch<SiteSettings>(SETTINGS_QUERY);
-  return data ?? {
-    siteName: "Nazareth Travel Group",
-    whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "254700000000",
-    phone: "+254 700 000 000",
-    email: "info@nazarethtravelgroup.com",
-  };
+  if (!data) return SETTINGS_FALLBACK;
+  // Deep merge: use CMS value if present, otherwise fallback
+  return { ...SETTINGS_FALLBACK, ...Object.fromEntries(Object.entries(data).filter(([, v]) => v !== null && v !== undefined && v !== "")) };
 }
 
 // ─── Blog ─────────────────────────────────────────────────────────────────────

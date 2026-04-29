@@ -5,11 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Star, Users, CalendarCheck } from "lucide-react";
 import { generalInquiryLink } from "@/lib/whatsapp";
+import type { SiteSettings } from "@/lib/sanity/fetch";
 
-const STATS = [
-  { value: "12+", label: "Years of service", icon: CalendarCheck },
-  { value: "5,000+", label: "Pilgrims served", icon: Users },
-  { value: "4.9", label: "Average rating", icon: Star },
+const STAT_ICONS = [CalendarCheck, Users, Star];
+
+const DEFAULT_STATS = [
+  { value: "12+", label: "Years of service" },
+  { value: "5,000+", label: "Pilgrims served" },
+  { value: "4.9", label: "Average rating" },
 ];
 
 const EASE = [0.2, 0.8, 0.2, 1] as [number, number, number, number];
@@ -23,7 +26,7 @@ const fadeUp = {
   }),
 };
 
-export default function Hero() {
+export default function Hero({ settings }: { settings?: SiteSettings }) {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -32,6 +35,14 @@ export default function Hero() {
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
+  const eyebrow = settings?.heroEyebrow ?? "Holy Land Pilgrimages from Africa";
+  const headline = settings?.heroHeadline ?? "Walk where Jesus walked.";
+  const headlineAccent = settings?.heroHeadlineAccent ?? "Your faith awaits.";
+  const subheadline = settings?.heroSubheadline ?? "Africa's most trusted Christian pilgrimage company. We take Kenyan churches, pastors, and individuals to the Holy Land, Rome, Egypt, and beyond — with care, integrity, and deep reverence.";
+  const ctaPrimary = settings?.heroCTAPrimary ?? "Plan My Pilgrimage";
+  const ctaSecondary = settings?.heroCTASecondary ?? "Chat on WhatsApp";
+  const stats = (settings?.heroStats?.length ? settings.heroStats : DEFAULT_STATS).slice(0, 3);
 
   return (
     <section
@@ -68,22 +79,15 @@ export default function Hero() {
             animate="show"
             className="text-xs font-semibold tracking-[0.22em] uppercase text-gold-300 font-body mb-4"
           >
-            Holy Land Pilgrimages from Africa
+            {eyebrow}
           </motion.p>
 
-          <motion.div
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-          >
+          <motion.div custom={1} variants={fadeUp} initial="hidden" animate="show">
             <div className="gold-divider mb-5" />
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.08] text-white">
-              Walk where{" "}
-              <em className="italic font-light">Jesus</em>{" "}
-              walked.{" "}
+              {headline}{" "}
               <br className="hidden sm:block" />
-              <span className="text-gold-300">Your faith awaits.</span>
+              <span className="text-gold-300">{headlineAccent}</span>
             </h1>
           </motion.div>
 
@@ -94,9 +98,7 @@ export default function Hero() {
             animate="show"
             className="mt-5 text-base md:text-lg text-stone-200 font-body font-light leading-relaxed max-w-lg"
           >
-            Africa&apos;s most trusted Christian pilgrimage company. We take
-            Kenyan churches, pastors, and individuals to the Holy Land, Rome,
-            Egypt, and beyond — with care, integrity, and deep reverence.
+            {subheadline}
           </motion.p>
 
           <motion.div
@@ -110,7 +112,7 @@ export default function Hero() {
               href="/book-inquiry"
               className="group inline-flex items-center gap-2 rounded-full bg-olive-600 hover:bg-olive-700 text-white font-body font-semibold text-sm px-6 py-3.5 transition-all hover:-translate-y-0.5 shadow-lg"
             >
-              Plan My Pilgrimage
+              {ctaPrimary}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <a
@@ -122,7 +124,7 @@ export default function Hero() {
               <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
               </svg>
-              Chat on WhatsApp
+              {ctaSecondary}
             </a>
           </motion.div>
 
@@ -134,7 +136,9 @@ export default function Hero() {
             animate="show"
             className="flex flex-wrap gap-5 mt-10 pt-8 border-t border-white/20"
           >
-            {STATS.map(({ value, label, icon: Icon }) => (
+            {stats.map(({ value, label }, idx) => {
+              const Icon = STAT_ICONS[idx] ?? Star;
+              return (
               <div key={label} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
                   <Icon className="h-4 w-4 text-gold-300" />
@@ -146,7 +150,8 @@ export default function Hero() {
                   <p className="text-xs text-stone-300 font-body mt-0.5">{label}</p>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </motion.div>
         </div>
 

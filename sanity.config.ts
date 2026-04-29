@@ -30,6 +30,8 @@ export default defineConfig({
             S.documentTypeListItem("faq").title("FAQs"),
             S.documentTypeListItem("post").title("Blog Posts"),
             S.documentTypeListItem("legalPage").title("Legal Pages (Privacy & Terms)"),
+            S.documentTypeListItem("scripture").title("Scripture Verses"),
+            S.documentTypeListItem("departure").title("Departures Calendar"),
             S.divider(),
             S.documentTypeListItem("inquiry").title("Inquiries"),
           ]),

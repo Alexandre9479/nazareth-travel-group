@@ -3,37 +3,14 @@ import { useRef, useEffect, useState } from "react";
 import { useInView } from "framer-motion";
 import { Users, CalendarCheck, Globe, Star } from "lucide-react";
 
-const STATS = [
-  {
-    icon: Users,
-    value: 5000,
-    suffix: "+",
-    label: "Pilgrims Served",
-    description: "Transformed lives across Kenya and Africa",
-  },
-  {
-    icon: CalendarCheck,
-    value: 12,
-    suffix: "+",
-    label: "Years of Service",
-    description: "Crafting sacred journeys since 2013",
-  },
-  {
-    icon: Globe,
-    value: 7,
-    suffix: "",
-    label: "Sacred Destinations",
-    description: "Israel, Jordan, Rome, Egypt and beyond",
-  },
-  {
-    icon: Star,
-    value: 4.9,
-    suffix: "/5",
-    label: "Average Rating",
-    description: "From verified pilgrim reviews",
-    decimal: true,
-  },
+const DEFAULT_STATS = [
+  { icon: Users, value: 5000, suffix: "+", label: "Pilgrims Served", description: "Transformed lives across Kenya and Africa" },
+  { icon: CalendarCheck, value: 12, suffix: "+", label: "Years of Service", description: "Crafting sacred journeys since 2013" },
+  { icon: Globe, value: 7, suffix: "", label: "Sacred Destinations", description: "Israel, Jordan, Rome, Egypt and beyond" },
+  { icon: Star, value: 4.9, suffix: "/5", label: "Average Rating", description: "From verified pilgrim reviews", decimal: true },
 ];
+
+const ICONS = [Users, CalendarCheck, Globe, Star];
 
 function Counter({
   target,
@@ -80,9 +57,13 @@ function Counter({
   );
 }
 
-export default function StatsCounter() {
+export default function StatsCounter({ stats: statsProp }: { stats?: { value: string; label: string }[] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  // If custom stats from CMS, parse them; otherwise use animated defaults
+  const useCustom = statsProp?.length;
+  const STATS = DEFAULT_STATS;
 
   return (
     <section
@@ -93,7 +74,9 @@ export default function StatsCounter() {
       <div className="mx-auto max-w-7xl px-6 md:px-12">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
           {STATS.map((stat, i) => {
-            const Icon = stat.icon;
+            const Icon = useCustom ? (ICONS[i] ?? Star) : stat.icon;
+            const label = useCustom ? (statsProp[i]?.label ?? stat.label) : stat.label;
+            const description = stat.description;
             return (
               <div
                 key={stat.label}
@@ -116,10 +99,10 @@ export default function StatsCounter() {
                   />
                 </div>
                 <p className="font-body font-semibold text-white text-sm mt-1">
-                  {stat.label}
+                  {label}
                 </p>
-                <p className="font-body text-stone-400 text-xs mt-1 max-w-[140px] leading-snug">
-                  {stat.description}
+                <p className="font-body text-stone-400 text-xs mt-1 max-w-35 leading-snug">
+                  {description}
                 </p>
               </div>
             );

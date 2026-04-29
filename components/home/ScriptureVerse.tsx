@@ -1,7 +1,10 @@
 import { SCRIPTURES } from "@/lib/data";
 
-export default function ScriptureVerse() {
-  const daily = SCRIPTURES[Math.floor((Date.now() / 86400000)) % SCRIPTURES.length];
+interface Scripture { verse: string; reference: string }
+
+export default function ScriptureVerse({ scriptures }: { scriptures?: Scripture[] }) {
+  const pool = scriptures?.length ? scriptures : SCRIPTURES;
+  const daily = pool[Math.floor(Date.now() / 86400000) % pool.length];
 
   return (
     <div className="bg-olive-50 border-y border-olive-200">

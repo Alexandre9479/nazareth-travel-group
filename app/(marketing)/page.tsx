@@ -12,7 +12,14 @@ import Testimonials from "@/components/home/Testimonials";
 import CTAStrip from "@/components/home/CTAStrip";
 import StatsCounter from "@/components/home/StatsCounter";
 import JsonLd, { travelAgencySchema } from "@/components/shared/JsonLd";
-import { getPackages, getDestinations, getFeaturedTestimonials } from "@/lib/sanity/fetch";
+import {
+  getPackages,
+  getDestinations,
+  getFeaturedTestimonials,
+  getSettings,
+  getScriptures,
+  getDepartures,
+} from "@/lib/sanity/fetch";
 
 export const revalidate = 60;
 
@@ -23,27 +30,51 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [packages, destinations, testimonials] = await Promise.all([
+  const [packages, destinations, testimonials, settings, scriptures, departures] = await Promise.all([
     getPackages(),
     getDestinations(),
     getFeaturedTestimonials(),
+    getSettings(),
+    getScriptures(),
+    getDepartures(),
   ]);
 
   return (
     <>
       <JsonLd data={travelAgencySchema()} />
-      <Hero />
-      <ScriptureVerse />
-      <SocialProofTicker />
-      <StatsCounter />
-      <TrustBadges />
-      <Features />
+      <Hero settings={settings} />
+      <ScriptureVerse scriptures={scriptures} />
+      <SocialProofTicker items={settings.tickerItems} />
+      <StatsCounter stats={settings.heroStats} />
+      <TrustBadges badges={settings.trustBadges} />
+      <Features
+        eyebrow={settings.featuresEyebrow}
+        headline={settings.featuresHeadline}
+        subheadline={settings.featuresSubheadline}
+        items={settings.featureItems}
+      />
       <PackagesGrid packages={packages} />
       <DestinationsBento destinations={destinations} />
-      <OurStory />
-      <DeparturesCalendar />
+      <OurStory
+        eyebrow={settings.storyEyebrow}
+        headline={settings.storyHeadline}
+        paragraph1={settings.storyParagraph1}
+        paragraph2={settings.storyParagraph2}
+        quote={settings.storyQuote}
+        quoteAuthor={settings.storyQuoteAuthor}
+        statValue={settings.storyStatValue}
+        statLabel={settings.storyStatLabel}
+      />
+      <DeparturesCalendar departures={departures} />
       <Testimonials testimonials={testimonials} />
-      <CTAStrip />
+      <CTAStrip
+        eyebrow={settings.ctaEyebrow}
+        headline={settings.ctaHeadline}
+        headlineAccent={settings.ctaHeadlineAccent}
+        subheadline={settings.ctaSubheadline}
+        whatsappLabel={settings.ctaWhatsAppLabel}
+        emailLabel={settings.ctaEmailLabel}
+      />
     </>
   );
 }

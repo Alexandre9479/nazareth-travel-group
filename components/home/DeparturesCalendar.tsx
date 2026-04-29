@@ -4,12 +4,16 @@ import { motion, useInView } from "framer-motion";
 import { CalendarDays, Users } from "lucide-react";
 import Section from "@/components/shared/Section";
 import SectionHeader from "@/components/shared/SectionHeader";
-import { DEPARTURES } from "@/lib/data";
+import { DEPARTURES as STATIC_DEPARTURES } from "@/lib/data";
 import { packageInquiryLink } from "@/lib/whatsapp";
 
-export default function DeparturesCalendar() {
+interface Departure { month: string; tour: string; seatsLeft: number; type: string }
+
+export default function DeparturesCalendar({ departures }: { departures?: Departure[] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const items = departures?.length ? departures : STATIC_DEPARTURES;
 
   return (
     <Section className="bg-white">
@@ -20,7 +24,7 @@ export default function DeparturesCalendar() {
         className="mb-12"
       />
       <div ref={ref} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {DEPARTURES.map((dep, i) => (
+        {items.map((dep, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 20 }}

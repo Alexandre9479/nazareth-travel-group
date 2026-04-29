@@ -5,7 +5,18 @@ export const SETTINGS_QUERY = groq`
     siteName, whatsappNumber, phone, email, address,
     facebookUrl, instagramUrl, youtubeUrl,
     announcement { enabled, text, linkText, linkUrl },
-    defaultSeoTitle, defaultSeoDescription
+    defaultSeoTitle, defaultSeoDescription,
+    heroEyebrow, heroHeadline, heroHeadlineAccent,
+    heroSubheadline, heroCTAPrimary, heroCTASecondary,
+    heroStats[] { value, label },
+    featuresEyebrow, featuresHeadline, featuresSubheadline,
+    featureItems[] { number, title, description },
+    storyEyebrow, storyHeadline, storyParagraph1, storyParagraph2,
+    storyQuote, storyQuoteAuthor, storyStatValue, storyStatLabel,
+    ctaEyebrow, ctaHeadline, ctaHeadlineAccent, ctaSubheadline,
+    ctaWhatsAppLabel, ctaEmailLabel,
+    tickerItems,
+    trustBadges[] { abbr, name, "logoUrl": logo.asset->url },
   }
 `;
 
@@ -123,6 +134,24 @@ export const ALL_POSTS_QUERY = groq`
     publishedAt,
     "cover": coalesce(coverImage.asset->url, ""),
     "coverAlt": coalesce(coverImage.alt, title)
+  }
+`;
+
+export const SCRIPTURES_QUERY = groq`
+  *[_type == "scripture" && active == true && usage == "daily"] | order(_createdAt asc) {
+    "id": _id,
+    verse,
+    reference
+  }
+`;
+
+export const DEPARTURES_QUERY = groq`
+  *[_type == "departure" && active == true] | order(departureDate asc) {
+    "id": _id,
+    tourTitle,
+    departureMonth,
+    type,
+    seatsLeft
   }
 `;
 
