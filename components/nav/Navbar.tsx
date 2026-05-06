@@ -98,7 +98,7 @@ export default function Navbar() {
             aria-label="Nazareth Travel Group — Home"
           >
             <Image
-              src="/brand/logo.svg"
+              src="/brand/logo.jpg"
               alt="Nazareth Travel Group"
               width={160}
               height={55}
@@ -230,13 +230,15 @@ export default function Navbar() {
                 className="flex items-center"
                 onClick={() => setMobileOpen(false)}
               >
-                <Image
-                  src="/brand/logo.svg"
-                  alt="Nazareth Travel Group"
-                  width={140}
-                  height={48}
-                  className="h-10 w-auto brightness-0 invert"
-                />
+                <div className="bg-white rounded-lg px-2.5 py-1.5">
+                  <Image
+                    src="/brand/logo.jpg"
+                    alt="Nazareth Travel Group"
+                    width={140}
+                    height={48}
+                    className="h-9 w-auto"
+                  />
+                </div>
               </Link>
               <button
                 onClick={() => setMobileOpen(false)}

@@ -36,8 +36,8 @@ export const metadata: Metadata = {
     "Nazareth Travel Group",
   ],
   icons: {
-    icon: "/brand/logo-mark.svg",
-    apple: "/brand/logo-mark.svg",
+    icon: "/brand/logo.jpg",
+    apple: "/brand/logo.jpg",
   },
   openGraph: {
     type: "website",

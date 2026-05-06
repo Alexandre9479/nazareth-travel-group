@@ -39,13 +39,15 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex mb-5 group">
-              <Image
-                src="/brand/logo.svg"
-                alt="Nazareth Travel Group"
-                width={180}
-                height={62}
-                className="h-14 w-auto brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity"
-              />
+              <div className="bg-white rounded-xl px-3 py-2 shadow-md group-hover:shadow-lg transition-shadow">
+                <Image
+                  src="/brand/logo.jpg"
+                  alt="Nazareth Travel Group"
+                  width={180}
+                  height={62}
+                  className="h-12 w-auto"
+                />
+              </div>
             </Link>
             <p className="text-sm leading-relaxed text-stone-400 max-w-xs mb-6">
               Africa's leading Christian pilgrimage company — crafting sacred
